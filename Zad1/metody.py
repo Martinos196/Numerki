@@ -17,13 +17,13 @@ def funkcja_wart(x, funkcja):
                 wartość funkcji dla argumentu x
     """
     if funkcja == "A":    # A dla funkcji wielomianowej
-        wart = horner([4,-2, 2, 4], x)  # obliczenie wartosci schematem hornera
+        wart = horner([4,2, 2, 5], x)  # obliczenie wartosci schematem hornera
     elif funkcja == "B":  # B dla funkcji trygonometrycznej
         wart = 2*np.sin(x)
     elif funkcja == "C":  # C dla funkcji wykładniczej
         wart = 3**x-2
     elif funkcja == "D":  # D dla funkcji złożonej
-        wart = -3*np.sin(x)+2*x**2-1
+        wart = np.sin(x)+3*x**2-4
     else:
         print("Nie wybrano żadnej z podanych funkcji.")
         wart = None
@@ -43,13 +43,13 @@ def funkcja_wzor(funkcja):
     """
     x = sp.Symbol('x')
     if funkcja == "A":    # A dla funkcji wielomianowej
-        wzor = horner([4,-2, 2, 4], x)     # przedstawienie funkcji w formie schematu Hornera
+        wzor = horner([4,-2, 2, 5], x)     # przedstawienie funkcji w formie schematu Hornera
     elif funkcja == "B":  # B dla funkcji trygonometrycznej
         wzor = 2*sp.sin(x)
     elif funkcja == "C":  # C dla funkcji wykładniczej
         wzor = 3**x-2
     elif funkcja == "D":  # D dla funkcji złożonej
-        wzor = 2*sp.sin(x)+3*x**2-4
+        wzor = sp.sin(x)+3*x**2-4
     else:
         print("Nie wybrano żadnej z podanych funkcji.")
         wzor = None
@@ -116,7 +116,7 @@ def metoda_bisekcji(poczatek_przedzialu, koniec_przedzialu, epsilon, iteracje, w
             return x1    # zwracanie znalezionego miejsca zerowego
 
 
-def newton(PPrzedzial, KPrzedzial, EPS, ITER, funkcja):
+def newton(poczatek_przedzialu, koniec_przedzialu, epsilon, max_iter, wybor):
     """Przyblizone rozwiazanie f(x)=0 z uzyciem metody Newtona
 
     Parametry
@@ -138,34 +138,36 @@ def newton(PPrzedzial, KPrzedzial, EPS, ITER, funkcja):
         Jesli Df(xn) == 0, zwroc None. Jesli liczba iteracji przekroczy max_iter, zwroc None.
     """
 
-    if funkcja_wart(PPrzedzial, funkcja) * funkcja_wart(KPrzedzial, funkcja) > 0:
+    if funkcja_wart(poczatek_przedzialu, wybor) * funkcja_wart(koniec_przedzialu, wybor) > 0:
         # sprawdzenie założeń metody Newtona
         return False
-    x = sp.Symbol('x')
-    df = sp.diff(funkcja_wzor(funkcja))       # obliczenie pochodnej wybranej funkcji
-    Xi = (PPrzedzial + KPrzedzial) / 2
-    if abs(df.subs(x, PPrzedzial)) > abs(df.subs(x, KPrzedzial)): 
+    arg_x = sp.Symbol('x')
+    df = sp.diff(funkcja_wzor(wybor))       # obliczenie pochodnej wybranej funkcji
+    if abs(df.subs(arg_x, poczatek_przedzialu)) < abs(df.subs(arg_x, koniec_przedzialu)):
         # blok instrukcji warunkowych ustalajacych w jakim miejscu rozpoczac algorytm,
         # eliminujemy miejsca, w których funkcja dąży do stałej wartości
-        Xi = PPrzedzial
-    elif abs(df.subs(x, PPrzedzial)) < abs(df.subs(x, KPrzedzial)):
-        Xi = KPrzedzial
-    if ITER != 0:   # obliczenia dla wyboru kryterium liczby iteracji
-        for n in range(0, ITER):
-            FXi = funkcja_wart(Xi, funkcja)  # obliczenie wartosci funkcji dla argumentu x
-            DXi = df.subs(x, Xi)   # obliczenie wartosci pochodnej dla argumentu x
-            Xi = Xi - float(FXi / DXi)  # kolejne wartosci argumentów
-        EPS = abs(funkcja_wart(Xi, funkcja))       # obliczenie dokladnosci epsilon
-        print("""Za pomocą metody stycznych znaleziono rozwiązanie po z dokladnoscia {1} epsilon po {0} iteracjach """.format(ITER, EPS))
-        return Xi
+        xn = koniec_przedzialu
+    elif abs(df.subs(arg_x, poczatek_przedzialu)) > abs(df.subs(arg_x, koniec_przedzialu)):
+        xn = poczatek_przedzialu
+    else:
+        xn = (poczatek_przedzialu + koniec_przedzialu) / 2
+    if max_iter != 0:   # obliczenia dla wyboru kryterium liczby iteracji
+        for n in range(0, max_iter):
+            fxn = funkcja_wart(xn, wybor)  # obliczenie wartosci funkcji dla argumentu x
+            dfxn = df.subs(arg_x, xn)   # obliczenie wartosci pochodnej dla argumentu x
+            xn = xn - float(fxn / dfxn)  # kolejne wartosci argumentów
+        epsilon = abs(funkcja_wart(xn, wybor))       # obliczenie dokladnosci epsilon
+        print("""Metoda stycznych: 
+            znaleziono rozwiazanie po {0} iteracjach z dokladnoscia epsilon={1}""".format(max_iter, epsilon))
+        return xn
     else:   # obliczenia dla wyboru kryterium dokladnosci
         n = 0   # zmienna iteracyjna
         while True:
-            FXi = funkcja_wart(Xi, funkcja)    # wartosc funkcji dla argumentu x
-            DXi = df.subs(x, Xi)   # obliczenie wartosci pochodnej dla argumentu x
-            if (abs(FXi) < EPS) and (abs(DXi) > EPS):
+            fxn = funkcja_wart(xn, wybor)    # wartosc funkcji dla argumentu x
+            dfxn = df.subs(arg_x, xn)   # obliczenie wartosci pochodnej dla argumentu x
+            if (abs(fxn) < epsilon) and (abs(dfxn) > epsilon):
                 # gdy wartosc funkcji jest z pewna dokladnoscia rowna zero oraz funkcja w tym punkcie nie dąży do zera
-                print('Za pomocą metody Newtona znaleziono rozwiązanie po ', n + 1, 'iteracjach.')
-                return Xi
-            Xi = Xi - float(FXi / DXi)     # kolejna wartość argumentu
+                print('Metoda Newtona: znaleziono rozwiazanie po ', n + 1, 'iteracjach.')
+                return xn
+            xn = xn - float(fxn / dfxn)     # kolejna wartość argumentu
             n += 1  # inkrementacja zmiennej iteracyjnej
