@@ -15,10 +15,10 @@ liczba_iteracji = 0
 
 while menu:
     print("""Witaj w programie obliczajacym rozwiazania rownan liniowych metoda bisekcji:
-            A- funkcja wielomianowa: 4*x^3-2*x^2-2x+4
+            A- funkcja wielomianowa: 4*x^3-2*x^2-2x+5
             B- funkcja trygonometryczna: 2*sin(x)
             C- funkcja wykladnicza: 3^x-2
-            D- funkcja zlozona: -3*sin(x)+2*x**2-1
+            D- funkcja zlozona: sin(x)+3*x**2-4
             """)
     wybor_funkcji = input("Wpisz A, B, C lub D, wybierz Q zeby zakonczyc: ").upper()
     # wybor funkcji wielomianowej, trygonometrycznej, wykladniczej lub zlozonej
@@ -92,7 +92,7 @@ while menu:
         else:
             pb.plot(wynik_newton, 0, 'x', label='miejsce zerowe2')
             # jeśli rozwiazanie obliczono poprawnie to pokaz je na wykresie, metoda Newtona
-        pokaz(wynik_bisekcja, wynik_newton, wybor_funkcji)
+        pokaz(wynik_bisekcja, wynik_newton)
         i += 1
     else:
         print("Prosze podac prawidlowa wartosc spomiędzy: a, b, c, d lub q (wielkosc liter dowolna)")
