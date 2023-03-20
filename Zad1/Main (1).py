@@ -1,7 +1,7 @@
 import pylab as pb  # do generowania wykresu
 import numpy as np  # do obliczeń trygonometrycznych oraz generowania argumentów funkcji do stworzenia wykresu
-from metody import newton, metoda_bisekcji,funkcja_wart
-from wykres import pokaz
+from funkcje import styczne, metoda_bisekcji,funkcja_wart
+from wykres import wykres
 
 
 
@@ -84,7 +84,7 @@ while menu:
         else:     # sprawdzenie czy miejsce zerowe zostało poprawnie obliczone i istnieje, sprawdzenie założeń
             pb.plot(wynik_bisekcja, 0, '+', label='miejsce zerowe')
             # generowanie miejsca zerowego na wykresie dla metody bisekcji
-        wynik_newton = newton(lewy_przedzial, prawy_przedzial, eps, liczba_iteracji, wybor_funkcji)
+        wynik_newton = styczne(lewy_przedzial, prawy_przedzial, eps, liczba_iteracji, wybor_funkcji)
         if wynik_newton is False:
             # gdy funkcja przyjmuje te same znaki na obu końcach przedziału dla metody Newtona
             print("Metoda Newtona: funkcja nie spelnia zalozen w danym przedziale.")
@@ -92,7 +92,7 @@ while menu:
         else:
             pb.plot(wynik_newton, 0, 'x', label='miejsce zerowe2')
             # jeśli rozwiazanie obliczono poprawnie to pokaz je na wykresie, metoda Newtona
-        pokaz(wynik_bisekcja, wynik_newton)
+        wykres(wynik_bisekcja, wynik_newton)
         i += 1
     else:
         print("Prosze podac prawidlowa wartosc spomiędzy: a, b, c, d lub q (wielkosc liter dowolna)")
