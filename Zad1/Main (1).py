@@ -1,98 +1,79 @@
-import pylab as pb  # do generowania wykresu
-import numpy as np  # do obliczeń trygonometrycznych oraz generowania argumentów funkcji do stworzenia wykresu
-from funkcje import styczne, metoda_bisekcji,funkcja_wart
+import pylab as pb
+import numpy as np
+from funkcje import styczne, metodaBisekcji,funkcjaWartosc
 from wykres import wykres
 
+wyborKryterium = ""
+lewyPrzedzial = 0
+prawyPrzedzial = 0
+epsilon = 0
+liczbaIteracji = 0
 
-
-menu = True
-i = 1
-wybor_kryterium = ""
-lewy_przedzial = 0
-prawy_przedzial = 0
-eps = 0
-liczba_iteracji = 0
-
-while menu:
-    print("""Witaj w programie obliczajacym rozwiazania rownan liniowych metoda bisekcji:
-            A- funkcja wielomianowa: 4*x^3-2*x^2-2x+5
-            B- funkcja trygonometryczna: 2*sin(x)
-            C- funkcja wykladnicza: 3^x-2
-            D- funkcja zlozona: sin(x)+3*x**2-4
-            """)
-    wybor_funkcji = input("Wpisz A, B, C lub D, wybierz Q zeby zakonczyc: ").upper()
-    # wybor funkcji wielomianowej, trygonometrycznej, wykladniczej lub zlozonej
-    if wybor_funkcji == "Q":
-        menu = False
-        print("Zamkniecie programu...")
-    elif wybor_funkcji in "ABCD":
-        jest = False
-        while jest is False:
+while True:
+    print("""Wybierz funkcje nieliniowa:
+a- funkcja wielomianowa: 4*x^3-2*x^2-2x+5
+b- funkcja trygonometryczna: 2*sin(x)
+c- funkcja wykladnicza: 3^x-2
+d- funkcja zlozona: sin(x)+3*x**2-4
+    """)
+    wybranaFunkcja = input("Wpisz a, b, c lub d: ").upper()
+    if wybranaFunkcja in "ABCD":
+        x = True
+        while x:
             try:
-                lewy_przedzial = int(input("Podaj lewy przedzial: "))   # wybor przedzialu funkcji
-                jest = True
+                lewyPrzedzial = int(input("Wpisz lewy przedzial: "))
+                x = False
             except ValueError:
-                print("Podaj prawidlowa calkowita liczbowa wartosc poczatku przedzialu")
-        else:
-            jest = False
-        while jest is False:
+                print("Bledna wartosc poczatku przedzialu")
+        x = True
+        while x:
             try:
-                prawy_przedzial = int(input("Podaj prawy przedzial: "))   # wybor przedzialu funkcji
-                jest = True
+                prawyPrzedzial = int(input("Wpisz prawy przedzial: "))
+                x = False
             except ValueError:
-                print("Podaj prawidlowa calkowita liczbowa wartosc konca przedzialu")
-        else:
-            jest = False
-        while jest is False:
-            wybor_kryterium = input("""Wybierz kryterium zatrzymania algorytmu:
-                d- spelnienie warunku nalozonego na dokladnosc
-                i- osiagniecie zadanej liczby iteracji\n""").lower()
-            if wybor_kryterium in "di":
-                jest = True
+                print("Bledna wartosc konca przedzialu")
+        x = True
+        while x:
+            wyborKryterium = input("""\nWybierz kryterium zatrzymania algorytmu:
+d- spelnienie warunku nalozonego na dokladnosc
+i- osiagniecie zadanej liczby iteracji\n""").lower()
+            if wyborKryterium in "di":
+                x = False
             else:
-                print("Prosze podac prawidlowa wartosc: d lub i (wielkosc liter nie ma znaczenia)")
-        jest = False
-        if wybor_kryterium == "i":      # wybór kryterium końca obliczeń, gdy wybrano liczbe iteracji
-            while jest is False:
+                print("Wpisano bledna wartosc")
+        x = True
+        if wyborKryterium == "d":
+            while x:
                 try:
-                    liczba_iteracji = int(input("Podaj liczbe iteracji: "))
-                    if liczba_iteracji > 0:
-                        jest = True
-                        eps = 0
+                    epsilon = abs(float(input("Wpisz dokladnosc epsilon: ")))
+                    x = False
+                except ValueError:
+                    print("Wpisano bledna wartosc")
+        elif wyborKryterium == "i":
+            while x:
+                try:
+                    liczbaIteracji = int(input("Wpisz liczbe iteracji: "))
+                    if liczbaIteracji > 0:
+                        x = False
+                        epsilon = 0
                     else:
-                        print("Podaj prawidlowa calkowita dodatnia wartosc liczby iteracji")
+                        print("Wpisano bledna wartosc")
                 except ValueError:
-                    print("Podaj prawidlowa calkowita dodatnia wartosc liczby iteracji")
-            else:
-                jest = False
-        elif wybor_kryterium == "d":       # gdy wybrano dokladnosc obliczen
-            while jest is False:
-                try:
-                    liczba_iteracji = 0
-                    eps = abs(float(input("Podaj dokladnosc epsilon: ")))
-                    jest = True
-                except ValueError:
-                    print("Podaj prawidlowa liczbowa wartosc dokladnosci epsilon")
-        x = np.linspace(lewy_przedzial, prawy_przedzial, 1000)   # generowanie argumentów funkcji
-        pb.plot(x, funkcja_wart(x, wybor_funkcji), label='wykres funkcji f(x)')    # generowanie wykresu funkcji
-        wynik_bisekcja = metoda_bisekcji(lewy_przedzial, prawy_przedzial, eps, liczba_iteracji, wybor_funkcji)
-        # obliczenie rozwiazania wg metody bisekcji
-        if wynik_bisekcja is False:
-            # gdy funkcja przyjmuje te same znaki na obu końcach przedziału dla metody bisekcji
+                    print("Wpisano bledna wartosc")
+        x = np.linspace(lewyPrzedzial, prawyPrzedzial, 1000)
+        pb.plot(x, funkcjaWartosc(x, wybranaFunkcja), label='wykres funkcji f(x)')
+        wynikBisekcja = metodaBisekcji(lewyPrzedzial, prawyPrzedzial, epsilon, liczbaIteracji, wybranaFunkcja)
+        if wynikBisekcja is False:
             print("Metoda bisekcji: funkcja nie spelnia zalozen w danym przedziale.")
             pb.plot(False)
-        else:     # sprawdzenie czy miejsce zerowe zostało poprawnie obliczone i istnieje, sprawdzenie założeń
-            pb.plot(wynik_bisekcja, 0, '+', label='miejsce zerowe')
-            # generowanie miejsca zerowego na wykresie dla metody bisekcji
-        wynik_newton = styczne(lewy_przedzial, prawy_przedzial, eps, liczba_iteracji, wybor_funkcji)
-        if wynik_newton is False:
-            # gdy funkcja przyjmuje te same znaki na obu końcach przedziału dla metody Newtona
+        else:
+            pb.plot(wynikBisekcja, 0, '+', label='miejsce zerowe')
+        wynikNewton = styczne(lewyPrzedzial, prawyPrzedzial, epsilon, liczbaIteracji, wybranaFunkcja)
+        if wynikNewton is False:
             print("Metoda Newtona: funkcja nie spelnia zalozen w danym przedziale.")
             pb.plot(False)
         else:
-            pb.plot(wynik_newton, 0, 'x', label='miejsce zerowe2')
-            # jeśli rozwiazanie obliczono poprawnie to pokaz je na wykresie, metoda Newtona
-        wykres(wynik_bisekcja, wynik_newton)
-        i += 1
+            pb.plot(wynikNewton, 0, 'x', label='miejsce zerowe2')
+        wykres(wynikBisekcja, wynikNewton)
     else:
-        print("Prosze podac prawidlowa wartosc spomiędzy: a, b, c, d lub q (wielkosc liter dowolna)")
+        print("Wpisano bledna wartosc")

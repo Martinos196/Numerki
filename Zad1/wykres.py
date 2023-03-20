@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from funkcje import funkcja_wzor
+from funkcje import funkcjaWzor
 
 
 def wykres(rozwiazanie_bisekcja, rozwiazanie_newton):
