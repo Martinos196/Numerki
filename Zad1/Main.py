@@ -42,14 +42,7 @@ i- osiagniecie zadanej liczby iteracji\n""").lower()
             else:
                 print("Wpisano bledna wartosc")
         x = True
-        if wyborKryterium == "d":
-            while x:
-                try:
-                    e = abs(float(input("Wpisz dokladnosc epsilon: ")))
-                    x = False
-                except ValueError:
-                    print("Wpisano bledna wartosc")
-        elif wyborKryterium == "i":
+        if wyborKryterium == "i":
             while x:
                 try:
                     liczbaIteracji = int(input("Wpisz liczbe iteracji: "))
@@ -58,6 +51,13 @@ i- osiagniecie zadanej liczby iteracji\n""").lower()
                         e = 0
                     else:
                         print("Wpisano bledna wartosc")
+                except ValueError:
+                    print("Wpisano bledna wartosc")
+        elif wyborKryterium == "d":
+            while x:
+                try:
+                    e = abs(float(input("Wpisz dokladnosc epsilon: ")))
+                    x = False
                 except ValueError:
                     print("Wpisano bledna wartosc")
         x = np.linspace(lewyPrzedzial, prawyPrzedzial, 1000)
