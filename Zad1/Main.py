@@ -1,4 +1,4 @@
-import pylab as pb
+import matplotlib.pyplot as plt
 import numpy as np
 from funkcje import styczne, metodaBisekcji,funkcjaWartosc
 from wykres import wykres
@@ -6,7 +6,7 @@ from wykres import wykres
 wyborKryterium = ""
 lewyPrzedzial = 0
 prawyPrzedzial = 0
-epsilon = 0
+e = 0
 liczbaIteracji = 0
 
 while True:
@@ -45,7 +45,7 @@ i- osiagniecie zadanej liczby iteracji\n""").lower()
         if wyborKryterium == "d":
             while x:
                 try:
-                    epsilon = abs(float(input("Wpisz dokladnosc epsilon: ")))
+                    e = abs(float(input("Wpisz dokladnosc epsilon: ")))
                     x = False
                 except ValueError:
                     print("Wpisano bledna wartosc")
@@ -55,25 +55,25 @@ i- osiagniecie zadanej liczby iteracji\n""").lower()
                     liczbaIteracji = int(input("Wpisz liczbe iteracji: "))
                     if liczbaIteracji > 0:
                         x = False
-                        epsilon = 0
+                        e = 0
                     else:
                         print("Wpisano bledna wartosc")
                 except ValueError:
                     print("Wpisano bledna wartosc")
         x = np.linspace(lewyPrzedzial, prawyPrzedzial, 1000)
-        pb.plot(x, funkcjaWartosc(x, wybranaFunkcja), label='wykres funkcji f(x)')
-        wynikBisekcja = metodaBisekcji(lewyPrzedzial, prawyPrzedzial, epsilon, liczbaIteracji, wybranaFunkcja)
+        plt.plot(x, funkcjaWartosc(x, wybranaFunkcja), label='wykres funkcji f(x)')
+        wynikBisekcja = metodaBisekcji(lewyPrzedzial, prawyPrzedzial, e, liczbaIteracji, wybranaFunkcja)
         if wynikBisekcja is False:
             print("Metoda bisekcji: funkcja nie spelnia zalozen w danym przedziale.")
-            pb.plot(False)
+            plt.plot(False)
         else:
-            pb.plot(wynikBisekcja, 0, '+', label='miejsce zerowe')
-        wynikNewton = styczne(lewyPrzedzial, prawyPrzedzial, epsilon, liczbaIteracji, wybranaFunkcja)
-        if wynikNewton is False:
-            print("Metoda Newtona: funkcja nie spelnia zalozen w danym przedziale.")
-            pb.plot(False)
+            plt.plot(wynikBisekcja, 0, '+', label='miejsce zerowe')
+        wynikStyczne = styczne(lewyPrzedzial, prawyPrzedzial, e, liczbaIteracji, wybranaFunkcja)
+        if wynikStyczne is False:
+            print("Metoda Stycznych: funkcja nie spelnia zalozen w danym przedziale.")
+            plt.plot(False)
         else:
-            pb.plot(wynikNewton, 0, 'x', label='miejsce zerowe2')
-        wykres(wynikBisekcja, wynikNewton)
+            plt.plot(wynikStyczne, 0, 'x', label='miejsce zerowe')
+        wykres(wynikBisekcja, wynikStyczne)
     else:
         print("Wpisano bledna wartosc")
