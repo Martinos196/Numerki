@@ -1,11 +1,8 @@
 import numpy as np
 
-def Seidl(eps,ITERATION_LIMIT):
-    A = np.array([[0.5, -0.0625, 0.1875, 0.0625],
-              [-0.0625, 0.5, 0, 0],
-              [0.1875, 0, 0.375, 0.125],
-              [0.0625, 0, 0.125, 0.25]])
-    b = np.array([1.5,-1.625, 1, 0.4375])
+def Seidl(matrixA, matrixB, eps, ITERATION_LIMIT):
+    A = np.array(matrixA)
+    b = np.array(matrixB)
 
     # prints the system
     print("System:")
@@ -19,7 +16,6 @@ def Seidl(eps,ITERATION_LIMIT):
         r = np.zeros_like(x)
         h = 0
         while True:
-            print("Current solution:", x)
             x_new = np.zeros_like(x)
             for i in range(A.shape[0]):
                 s1 = np.dot(A[i, :i], x_new[:i])
@@ -36,7 +32,6 @@ def Seidl(eps,ITERATION_LIMIT):
                 break      
     else:
         for it_count in range(ITERATION_LIMIT):
-            print("Current solution:", x)
             x_new = np.zeros_like(x)
             for i in range(A.shape[0]):
                 s1 = np.dot(A[i, :i], x_new[:i])
