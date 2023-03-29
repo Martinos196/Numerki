@@ -44,3 +44,12 @@ def Seidl(matrixA, matrixB, eps, ITERATION_LIMIT):
     print("Solution:")
     print(x)
 
+def is_gauss_seidel_convergent(matrixA): #Funkcja sprawdzająca warunek zbieżności 
+    A = np.array(matrixA)
+    n = A.shape[0]
+    for i in range(n):
+        if A[i,i] <= 0:
+            return False
+    if not np.allclose(A, A.T):
+        return False
+    return True

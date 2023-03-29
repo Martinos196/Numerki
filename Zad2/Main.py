@@ -1,5 +1,6 @@
 import numpy as np
-from funkcje import Seidl
+import sys
+from funkcje import Seidl, is_gauss_seidel_convergent
 
 with open('Macierz.txt', 'r') as file:
     lines = file.readlines()[:-1] # pomijamy ostatni wiersz
@@ -16,6 +17,11 @@ last_line = lines[-1].strip()
 row = [float(x) for x in last_line.split()]
 
 file.close()
+
+
+if is_gauss_seidel_convergent(matrix) is False:
+    print("Podana macierz nie spełnia warunków zbieżności")
+    sys.exit()
 
 x = True
 while x:
