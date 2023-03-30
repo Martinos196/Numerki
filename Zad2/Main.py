@@ -39,7 +39,7 @@ if wyborKryterium == "i":
             liczbaIteracji = int(input("Wpisz liczbe iteracji: "))
             if liczbaIteracji > 0:
                 x = False
-                e = 0
+                e = abs(float(input("Wpisz dokladnosc epsilon: ")))
             else:
                 print("Wpisano bledna wartosc")
         except ValueError:
