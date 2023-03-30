@@ -1,6 +1,6 @@
 import numpy as np
 
-def Seidl(matrixA, matrixB, eps, ITERATION_LIMIT):
+def Seidl(matrixA, matrixB,eps, ITERATION_LIMIT):
     A = np.array(matrixA)
     b = np.array(matrixB)
 
@@ -27,8 +27,10 @@ def Seidl(matrixA, matrixB, eps, ITERATION_LIMIT):
             if h == 14:
                 print("Podano za mały epsilon")
                 break
-            elif abs(np.max(r)) < eps:
+            elif np.max(abs(r)) < eps:
                 print("Znaleziono rozwiązanie po "+ str(h) +" iteracjach")  
+                print("Solution:")
+                print(x)
                 break      
     else:
         for it_count in range(ITERATION_LIMIT):
@@ -40,9 +42,8 @@ def Seidl(matrixA, matrixB, eps, ITERATION_LIMIT):
             if np.allclose(x, x_new, rtol=eps):
                 break
             x = x_new
-
-    print("Solution:")
-    print(x)
+        print("Solution:")
+        print(x)   
 
 def is_gauss_seidel_convergent(matrixA): #Funkcja sprawdzająca warunek zbieżności 
     A = np.array(matrixA)
