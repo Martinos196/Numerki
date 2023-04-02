@@ -13,27 +13,22 @@ def Seidl(matrixA, matrixB,eps, ITERATION_LIMIT):
 
     x = np.zeros_like(b)
     if ITERATION_LIMIT==0:
-        r = np.zeros_like(x)
+        x_new = np.zeros_like(x)
         h = 0
         while True:
-            x_new = np.zeros_like(x)
             for i in range(A.shape[0]):
                 s1 = np.dot(A[i, :i], x_new[:i])
                 s2 = np.dot(A[i, i + 1:], x[i + 1:])
                 x_new[i] = (b[i] - s1 - s2) / A[i, i]
-                r[i] = b[i] - s1
-            x=x_new   
             h = h + 1
-            if h == 14:
-                print("Podano za mały epsilon")
-                break
-            elif np.max(abs(r)) < eps:
+            if np.linalg.norm(x_new - x) < eps:
                 print("Znaleziono rozwiązanie po "+ str(h) +" iteracjach")  
                 print("Solution:")
                 print(x)
-                break      
+                break  
+            x=x_new.copy()     
     else:
-        for it_count in range(ITERATION_LIMIT):
+        for j in range(ITERATION_LIMIT):
             x_new = np.zeros_like(x)
             for i in range(A.shape[0]):
                 s1 = np.dot(A[i, :i], x_new[:i])
@@ -45,12 +40,12 @@ def Seidl(matrixA, matrixB,eps, ITERATION_LIMIT):
         print("Solution:")
         print(x)   
 
-def is_gauss_seidel_convergent(matrixA): #Funkcja sprawdzająca warunek zbieżności 
+def is_gauss_seidel_convergent(matrixA):
     A = np.array(matrixA)
-    n = A.shape[0]
+    n = len(A)
+    # Sprawdzamy, czy macierz A jest silnie diagonalnie dominująca lub dodatnio określona
     for i in range(n):
-        if A[i,i] <= 0:
+        row_sum = sum(abs(A[i, j]) for j in range(n) if j != i)
+        if abs(A[i, i]) <= row_sum:
             return False
-    if not np.allclose(A, A.T):
-        return False
     return True
