@@ -1,40 +1,40 @@
+import numpy as np  
+import sympy as sp
 from horner import horner
-import numpy as np
-import sympy as sp  
 
-def funkcjaWartosc(x, funkcja):
-    if funkcja == "A":    
-        wart = horner([4,-2, 2, 5], x)  
-    elif funkcja == "B":  
-        wart = 2*np.sin(x)
-    elif funkcja == "C":  
-        wart = abs(x-2)
-    elif funkcja == "D": 
-        wart = x-1
-    elif funkcja == "E": 
+def wartosc_funkcji(x, wybor):
+    if wybor == "A":    
+        wart = horner([5, 2, -1, 5], x) 
+    elif wybor == "B":  
+        wart = 2 * np.sin(x)
+    elif wybor == "C":  
+        wart = abs(x - 2)
+    elif wybor == "D":  
+        wart = x - 1
+    elif wybor == "E": 
         wart = abs(np.cos(x) - 0.5)
     else:
-        print("Nie wybrano żadnej z podanych funkcji.")
+        print("Podano nieprawidlowa wartosc. Wybierz a, b, c lub d")
         wart = None
-    return wart    
+    return wart     
 
-def funkcjaWzor(funkcja):
+
+def wzor_funkcji(wybor):
     x = sp.Symbol('x')
-    if funkcja == "A":   
-        wzor = horner([4,-2, 2, 5], x)     
-    elif funkcja == "B":  
-        wzor = 2*sp.sin(x)
-    elif funkcja == "C":  
-        wzor = abs(x-2)
-    elif funkcja == "D":  
-        wzor = x-1
-    elif funkcja == "E": 
-        wzor = abs(sp.cos(x) - 0.5)    
+    if wybor == "A":  
+        wzor = horner([5, 2, -1, 5], x)  
+    elif wybor == "B": 
+        wzor = 2 * sp.sin(x)
+    elif wybor == "C":  
+        wzor = abs(x - 2)
+    elif wybor == "D":  
+        wzor = x - 1
+    elif wybor == "E": 
+        wzor = abs(sp.cos(x) - 0.5)
     else:
-        print("Nie wybrano żadnej z podanych funkcji.")
+        print("Podano nieprawidlowa wartosc. Wybierz a, b, c lub d")
         wzor = None
-    return wzor 
-
+    return wzor     
 def silnia(x):
     n = x
     if x > 1:
@@ -46,8 +46,7 @@ def silnia(x):
     else:
         print("Prosze podac dodatnia liczbe calkowita")
         return None
-
-
+    
 def roznice_skonczone(tab_y):
     liczba_wezlow_interpolacji = len(tab_y)
     delta_y = [[]]
@@ -59,12 +58,10 @@ def roznice_skonczone(tab_y):
 
 
 def interpolacja_wprzod(tab_x, tab_y):
-
     h = tab_x[1] - tab_x[0]
     liczba_wezlow = len(tab_y)
     delta_y = roznice_skonczone(tab_y)
     args_x = sp.Symbol('x')
-    # if arg_x < (tab_x[0] + tab_x[-1]) / 2:
     q = (args_x - tab_x[0])/h
     wspolczynniki = []
     for i in range(liczba_wezlow):

@@ -1,6 +1,6 @@
 import pylab as pb
 import numpy as np
-from funkcje import funkcjaWartosc, funkcjaWzor, interpolacja_wprzod, interpolacja_wstecz
+from funkcje import interpolacja_wprzod, interpolacja_wstecz, wartosc_funkcji, wzor_funkcji
 import sympy as sp
 from horner import horner
 
@@ -45,7 +45,7 @@ __________________________________________________________
 ______________________________________________________
                 WYBOR FUNKCJI:
 ______________________________________________________
-A: funkcja wielomianowa: 4*x^3-2*x^2+2x+5
+A: funkcja wielomianowa: 4*x^3+2*x^2+2x+5
 B: funkcja trygonometryczna: 2*sin(x)
 C: funkcja |x|: |x - 2|
 D: liniowa: x - 1
@@ -58,7 +58,7 @@ ______________________________________________________
                 if wybor_funkcji in 'ABCDE':
                     jest = False
                 else:
-                    print("Prosze wpisac A, B, C, D lub E.")
+                    print("Prosze wpisac A, B, C, D lub E. Wielkosc liter nie ma znaczenia")
             jest = True
             while jest:
                 try:
@@ -71,11 +71,11 @@ ______________________________________________________
                     print("Prosze podac prawidlowa liczbe wezlow")
             wartosci_funkcji = []
             for argument in argumenty:
-                wartosci_funkcji.append(funkcjaWartosc(argument, wybor_funkcji))
+                wartosci_funkcji.append(wartosc_funkcji(argument, wybor_funkcji))
             pb.plot(argumenty, wartosci_funkcji, label='wykres funkcji f(x)')
-            pb.title('f(x)=' + str(funkcjaWzor(wybor_funkcji)))  # tworzy tytuł wykresu
+            pb.title('f(x)=' + str(wzor_funkcji(wybor_funkcji)))  # tworzy tytuł wykresu
             x_pkt_inter = np.linspace(lewy_przedzial, prawy_przedzial, liczba_wezlow_interpolacyjnych)
-            y_pkt_inter = funkcjaWartosc(x_pkt_inter, wybor_funkcji)
+            y_pkt_inter = wartosc_funkcji(x_pkt_inter, wybor_funkcji)
             x_pkt_inter = list(x_pkt_inter)
             y_pkt_inter = list(y_pkt_inter)
         else:
@@ -83,7 +83,7 @@ ______________________________________________________
             while jest:
                 try:
                     with open("dane.txt", 'r') as dane:
-                        for i in range(0):
+                        for i in range(7):
                             next(dane)
                         x_pkt_inter = dane.readline().split()
                         y_pkt_inter = dane.readline().split()
@@ -112,17 +112,17 @@ Gdy zmiany zostana wprowadzone prosze nacisnac dowolny klawisz""")
                 wartosci.append(horner(wspolczynniki_interpolacji_wstecz, argument))
         pb.scatter(x_pkt_inter, y_pkt_inter, label='wezly interpolacyjne')
         pb.plot(argumenty, wartosci, linestyle=":", label='wielomian interpolacyjny')
-        pb.xlabel("x")  
-        pb.ylabel("y")  
+        pb.xlabel("x")  # opis osi x
+        pb.ylabel("y")  # opis osi y
         pb.grid(True)
-        pb.legend(loc='upper right')
+        pb.legend(loc='upper right')  # tworzy legendę wykresu
         print("Prosze zamknac okno z Wykresem {} aby kontynuowac".format(zmienna_iteracyjna))
         print("""Wielomian interpolacyjny jest postaci:
 <{0}:{1}): {3}
 <{1}:{2}>: {4}
         """.format(lewy_przedzial, (lewy_przedzial + prawy_przedzial) / 2, prawy_przedzial, wzor_interpolacji_wprzod,
                     wzor_interpolacji_wstecz))
-        pb.show(block=True) 
+        pb.show(block=True)  # pokazuje wykres
         zmienna_iteracyjna += 1
     else:
-        print("Prosze dokonac prawidlowego wyboru.")
+        print("Prosze dokonac prawidlowego wyboru. Wielkosc liter nie ma znaczenia")
