@@ -13,13 +13,10 @@ menu = True
 wybor_funkcji = ""
 while menu is True:
     wybor_opcji = input("""
-__________________________________________________________
-                        MENU:
-__________________________________________________________
-T: wczytanie stabularyzowanej funkcji z pliku zewnetrznego
-G: wczytanie funkcji sposrod gotowych
-Q: wyjscie z programu
-__________________________________________________________
+Menu:
+t: wczytanie stabularyzowanej funkcji z pliku zewnetrznego
+g: wczytanie funkcji sposrod gotowych
+q: wyjscie z programu
 """).lower()
     if wybor_opcji == 'q':
         menu = False
@@ -42,15 +39,12 @@ __________________________________________________________
         argumenty = list(np.linspace(lewy_przedzial, prawy_przedzial, 1000))
         if wybor_opcji == "g":
             print("""
-______________________________________________________
-                WYBOR FUNKCJI:
-______________________________________________________
-A: funkcja wielomianowa: 4*x^3+2*x^2+2x+5
-B: funkcja trygonometryczna: 2*sin(x)
-C: funkcja |x|: |x - 2|
-D: liniowa: x - 1
-E: funkcja zlozona: |cos(x) - 0.5|
-______________________________________________________
+Wybor funkcji:
+a: funkcja wielomianowa: 4*x^3+2*x^2+2x+5
+b: funkcja trygonometryczna: 2*sin(x)
+c: funkcja |x|: |x - 2|
+d: liniowa: x - 1
+e: funkcja zlozona: |cos(x) - 0.5|
 """)
             jest = True
             while jest:
