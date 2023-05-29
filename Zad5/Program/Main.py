@@ -4,8 +4,6 @@ import pylab as pb
 import wielomian
 
 
-# Michał Dudkiewicz, Marcjan Jędrzejczak COPYRIGHT SIGN :D
-
 
 stopien_apro = 0
 blad = 0
